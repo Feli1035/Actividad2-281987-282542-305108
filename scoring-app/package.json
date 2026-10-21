@@ -1,0 +1,21 @@
+{
+  "name": "scoring-app",
+  "version": "1.0.0",
+  "description": "Scoring crediticio para alta de préstamos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.81.2",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.223.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",
+    "@opentelemetry/sdk-metrics": "^2.12.0",
+    "@opentelemetry/sdk-node": "^0.223.0",
+    "express": "^5.3.0",
+    "winston": "^3.19.0"
+  }
+}

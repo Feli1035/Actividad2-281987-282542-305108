@@ -1,0 +1,40 @@
+# Configuración del OpenTelemetry Collector que corre como sidecar.
+# Recibe trazas y métricas de la app por OTLP y las reenvía a Grafana Cloud.
+# Las credenciales se pasan por variables de entorno (ver .env.example).
+extensions:
+  health_check:
+  basicauth/grafana:
+    client_auth:
+      username: ${env:GRAFANA_INSTANCE_ID}
+      password: ${env:GRAFANA_API_TOKEN}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+
+exporters:
+  otlphttp/grafana:
+    endpoint: ${env:GRAFANA_OTLP_ENDPOINT}
+    auth:
+      authenticator: basicauth/grafana
+  debug:
+    verbosity: basic
+
+service:
+  extensions: [health_check, basicauth/grafana]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/grafana, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/grafana, debug]

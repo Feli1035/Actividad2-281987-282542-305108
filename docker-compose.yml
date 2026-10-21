@@ -1,0 +1,17 @@
+# Para probar localmente la app con el collector (mismo esquema que en ECS).
+services:
+  app:
+    build: ./scoring-app
+    ports:
+      - "3000:3000"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4318
+      OTEL_SERVICE_NAME: scoring-app
+    depends_on:
+      - collector
+
+  collector:
+    build: ./collector
+    env_file: .env
+    ports:
+      - "4318:4318"
