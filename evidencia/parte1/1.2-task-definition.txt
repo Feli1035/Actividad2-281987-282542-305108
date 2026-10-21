@@ -1,0 +1,16 @@
+--------------------------------------------------------------
+|                   DescribeTaskDefinition                   |
++-----------------+------------------------------------------+
+|  arquitectura   |  X86_64                                  |
+|  compatibilidad |  FARGATE                                 |
+|  contenedor     |  api                                     |
+|  cpu            |  256                                     |
+|  familia        |  scoring-app                             |
+|  memoria        |  512                                     |
+|  puerto         |  3000                                    |
+|  red            |  awsvpc                                  |
+|  revision       |  1                                       |
+|  rolEjecucion   |  arn:aws:iam::238324594830:role/LabRole  |
+|  rolTask        |  arn:aws:iam::238324594830:role/LabRole  |
+|  so             |  LINUX                                   |
++-----------------+------------------------------------------+

@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------------------------------------------
+|                                                DescribeServices                                                 |
++----------------+------------------------------------------------------------------------------------------------+
+|  contenedor    |  api                                                                                           |
+|  corriendo     |  1                                                                                             |
+|  deseadas      |  1                                                                                             |
+|  estado        |  ACTIVE                                                                                        |
+|  launchType    |  FARGATE                                                                                       |
+|  puerto        |  3000                                                                                          |
+|  servicio      |  scoring-api                                                                                   |
+|  targetGroup   |  arn:aws:elasticloadbalancing:us-east-1:238324594830:targetgroup/scoring-tg/c28cb0c0213c2000   |
+|  taskDefinition|  arn:aws:ecs:us-east-1:238324594830:task-definition/scoring-app:1                              |
++----------------+------------------------------------------------------------------------------------------------+
