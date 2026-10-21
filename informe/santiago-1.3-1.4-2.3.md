@@ -83,21 +83,40 @@ En resumen, el cuello de botella es el cálculo de Monte Carlo ejecutado de form
 
 ## 2.3 Comparación de resultados
 
-Volvimos a correr el mismo script, sin tocar una línea, contra el `POST /scoring` de la versión con cola y workers, con la misma CPU y memoria por tarea que en la Parte 1 para que la comparación fuera justa.
+Volvimos a correr el mismo script, sin tocar una línea, contra el `POST /scoring` de la versión con cola y workers. Mantuvimos 0,25 vCPU y 512 MB por tarea, igual que en la Parte 1, para que la comparación fuera justa. La prueba corrió de 22:07 a 22:10, con un solo target del API (la tarea v1 ya había terminado de drenar) y dos workers.
 
-[Captura: resumen de k6 de la Parte 2]
+[Captura: resumen de k6 de la Parte 2, salida de `tail -40 k6/resultado-parte2.txt`]
 
 | Métrica | Parte 1 (síncrono) | Parte 2 (cola y workers) |
 |---|---|---|
-| P(95) de `http_req_duration` | 59,99 s | [P95_P2] |
-| `http_req_failed` | 45,76 % | [FAILED_P2] |
-| Total de solicitudes (`http_reqs`) | 59 | [REQS_P2] |
-| Solicitudes por segundo | 0,29 | [RPS_P2] |
-| ¿Cumple los umbrales? | No | [SI_NO_P2] |
-| Reinicios de tareas durante la prueba | 1 | [REINICIOS_P2] |
+| P(95) de `http_req_duration` | 59,99 s | 175,64 ms |
+| Mediana de `http_req_duration` | 9,28 s | 151,3 ms |
+| `http_req_failed` | 45,76 % (27 de 59) | 0,00 % (0 de 1311) |
+| Total de solicitudes (`http_reqs`) | 59 | 1311 |
+| Solicitudes por segundo | 0,29 | 7,26 |
+| ¿Cumple los umbrales? | No, falla los dos | Sí, cumple los dos |
+| Reinicios de tareas durante la prueba | 1 | 0 |
 
-[Captura: eventos del servicio ECS durante la prueba de la Parte 2, sin reinicios]
+La diferencia es grande en las tres métricas que pide la letra. El P(95) bajó de 59,99 segundos a 175,64 milisegundos, unas 340 veces menos, y quedó muy por debajo del límite de 2500 ms. La tasa de errores pasó de 45,76 % a cero: las 1311 solicitudes recibieron un 202. Y con la misma carga de 10 usuarios procesamos 1311 solicitudes en lugar de 59, 22 veces más, porque los usuarios virtuales ya no pasan la prueba esperando en la fila. Con la pausa de 1 segundo por iteración, 7,26 solicitudes por segundo es prácticamente el máximo que esta carga puede generar, así que ahora el límite lo pone la prueba y no el servicio.
 
-El P(95) bajó de 59,99 segundos a [P95_P2] y la tasa de errores pasó de 45,76 % a [FAILED_P2], así que ahora sí cumplimos los dos umbrales. Además procesamos [REQS_P2] solicitudes contra 59 en el mismo tiempo, porque los usuarios virtuales ya no pasan la mayor parte de la prueba esperando en la fila. La mejora no viene de que el cálculo sea más rápido, porque es exactamente el mismo, sino de que la API ya no lo ejecuta: valida los datos, guarda la solicitud como `PENDIENTE`, la manda a la cola y responde 202 en milisegundos. El event loop queda libre, `/health` contesta siempre y ECS no vuelve a reiniciar la tarea durante la prueba.
+![Servicio scoring-api en la versión 2](capturas/2.3-servicio-api-v2-healthy.png)
 
-Hay un matiz que queremos dejar explícito para no sobrevender el resultado. El P(95) de la Parte 2 mide cuánto tarda el sistema en aceptar la solicitud, no cuánto tarda en tener el score listo. El cálculo sigue llevando el mismo tiempo, ahora en los workers, y el resultado aparece unos segundos después al consultar `GET /scoring/:id`. Al terminar la prueba quedaron [MENSAJES_EN_COLA] mensajes pendientes en `scoring-jobs`, que los workers procesaron en [TIEMPO_VACIAR_COLA]. Si la carga real fuera mayor que lo que los workers pueden procesar, la cola crecería y la espera del solicitante también, aunque la API no fallaría. Ese es el punto donde, como siguiente paso, escalaríamos los workers según la cantidad de mensajes en la cola.
+Esta captura muestra el servicio `scoring-api` ya con la task definition `scoring-app:2` y su target `Healthy`, sin ningún target `Unhealthy`.
+
+![Target group sano durante la Parte 2](capturas/2.3-target-group-healthy.png)
+
+Esta captura muestra el target group `scoring-tg` con su único target `Healthy` y ninguno en `Unhealthy` ni `Draining`.
+
+Los reinicios también desaparecieron. Durante la prueba muestreamos el estado del target cada 5 segundos y estuvo `healthy` en todas las mediciones, contra las 21 veces `unhealthy` de la Parte 1. En los eventos del servicio, lo último que aparece es el fin del despliegue a las 22:02, y no hay ningún evento de health check ni de reemplazo de tareas entre las 22:07 y las 22:10.
+
+[Captura: eventos del servicio scoring-api sin reinicios durante la prueba]
+
+La mejora no viene de que el cálculo sea más rápido, porque es exactamente el mismo, sino de que la API ya no lo ejecuta: valida los datos, guarda la solicitud como `PENDIENTE` en DynamoDB, la manda a la cola y responde 202 en unos 150 milisegundos. El event loop queda libre, `/health` contesta siempre y ECS no tiene motivo para reiniciar la tarea.
+
+Hay un resultado que queremos contar con la misma claridad que los anteriores, porque es el límite de lo que logramos. El P(95) de la Parte 2 mide cuánto tarda el sistema en aceptar la solicitud, no cuánto tarda en tener el score listo. Al terminar la prueba quedaron 1240 mensajes esperando en `scoring-jobs`, y ninguno en la DLQ. La cuenta lo explica: entraron 7,26 solicitudes por segundo, mientras que cada worker procesa una solicitud a la vez y, con 0,25 vCPU, tarda unos 4,6 segundos por cálculo. Con dos workers salen unas 0,43 solicitudes por segundo, y lo confirmamos midiendo la cola: entre las 22:10 y las 22:12 bajó de 1240 a 1192 mensajes, unos 0,41 por segundo. A ese ritmo, la cola tarda unos 50 minutos en vaciarse, y ese es el tiempo que esperaría el último solicitante de la prueba para ver su resultado.
+
+![Monitoreo de la cola scoring-jobs](capturas/2.3-sqs-monitoring.png)
+
+[Captura: cola scoring-jobs con los mensajes pendientes después de la prueba]
+
+Por eso decimos que el rediseño cumple lo que pide la financiera en cuanto a errores y reinicios, pero no hace aparecer CPU de la nada. La cola convierte lo que antes eran errores 502 y 504 en espera ordenada: ninguna solicitud se pierde, y si un worker se cae, el mensaje vuelve a la cola. La capacidad de cálculo, en cambio, sigue siendo la que le damos a los workers, y la ventaja de esta arquitectura es que ahora esa capacidad se puede escalar de forma independiente del API. El siguiente paso que proponemos es configurar auto scaling del servicio `scoring-worker` según la métrica `ApproximateNumberOfMessagesVisible` de la cola: para seguirle el ritmo a 7,26 solicitudes por segundo harían falta unos 34 workers de 0,25 vCPU, o menos workers con más vCPU cada uno.
