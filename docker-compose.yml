@@ -1,17 +1,46 @@
-# Para probar localmente la app con el collector (mismo esquema que en ECS).
+# Para probar localmente la API y el worker contra LocalStack (SQS + DynamoDB).
+# El collector solo se levanta con: docker compose --profile otel up
+x-aws-local: &aws-local
+  AWS_REGION: us-east-1
+  AWS_ENDPOINT_URL: http://localstack:4566
+  AWS_ACCESS_KEY_ID: test
+  AWS_SECRET_ACCESS_KEY: test
+  QUEUE_URL: http://localstack:4566/000000000000/scoring-jobs
+  TABLE_NAME: Scorings
+  OTEL_SDK_DISABLED: "true"
+
 services:
+  localstack:
+    image: localstack/localstack:3.0
+    environment:
+      SERVICES: sqs,dynamodb
+    volumes:
+      - ./localstack/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+    healthcheck:
+      test: ["CMD", "awslocal", "dynamodb", "describe-table", "--table-name", "Scorings"]
+      interval: 5s
+      retries: 20
+
   app:
     build: ./scoring-app
     ports:
       - "3000:3000"
-    environment:
-      OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4318
-      OTEL_SERVICE_NAME: scoring-app
+    environment: *aws-local
     depends_on:
-      - collector
+      localstack:
+        condition: service_healthy
+
+  worker:
+    build: ./scoring-app
+    command: ["node", "worker.js"]
+    environment: *aws-local
+    depends_on:
+      localstack:
+        condition: service_healthy
 
   collector:
     build: ./collector
+    profiles: ["otel"]
     env_file: .env
     ports:
       - "4318:4318"

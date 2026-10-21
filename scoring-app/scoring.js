@@ -16,13 +16,20 @@ function rng(seed) {
     };
 }
 
-function calcularScore({ CI, IngresoMensual, MontoSolicitado, PlazoMeses }) {
+// Valida la solicitud sin calcular el score, para que la API pueda rechazarla
+// con 400 antes de encolarla.
+function validarSolicitud({ IngresoMensual, MontoSolicitado, PlazoMeses }) {
     const ingreso = Number(IngresoMensual);
     const monto = Number(MontoSolicitado);
     const plazo = Number(PlazoMeses);
     if (!(ingreso > 0 && monto > 0 && plazo > 0)) {
         throw new Error('Datos de solicitud inválidos');
     }
+    return { ingreso, monto, plazo };
+}
+
+function calcularScore({ CI, IngresoMensual, MontoSolicitado, PlazoMeses }) {
+    const { ingreso, monto, plazo } = validarSolicitud({ IngresoMensual, MontoSolicitado, PlazoMeses });
 
     const tasaMensual = 0.035;
     const cuota = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -plazo));
@@ -49,4 +56,4 @@ function calcularScore({ CI, IngresoMensual, MontoSolicitado, PlazoMeses }) {
     };
 }
 
-module.exports = { calcularScore };
+module.exports = { calcularScore, validarSolicitud };

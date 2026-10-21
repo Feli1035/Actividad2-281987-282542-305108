@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1154.0",
+    "@aws-sdk/client-sqs": "^3.1154.0",
+    "@aws-sdk/lib-dynamodb": "^3.1154.0",
     "@opentelemetry/auto-instrumentations-node": "^0.81.2",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.223.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",

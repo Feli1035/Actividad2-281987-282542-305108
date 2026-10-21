@@ -6,13 +6,15 @@ La letra completa de la actividad y la entrega están en la tarea de Aulas.
 
 | Carpeta | Contenido |
 |---|---|
-| `scoring-app/` | API Express con su Dockerfile, instrumentada con OpenTelemetry (trazas y métricas por OTLP a `localhost:4318`) |
+| `scoring-app/` | API Express (`index.js`) y worker (`worker.js`) en la misma imagen, instrumentados con OpenTelemetry (trazas y métricas por OTLP a `localhost:4318`) |
+| `localstack/` | Script que crea la cola `scoring-jobs`, su DLQ y la tabla `Scorings` en LocalStack |
 | `collector/` | Imagen del OpenTelemetry Collector para correr como sidecar; reenvía trazas y métricas a Grafana Cloud |
 
 ## Probar localmente
 
+Levanta la API, el worker y LocalStack (SQS + DynamoDB, con la cola, la DLQ y la tabla ya creadas):
+
 ```bash
-cp .env.example .env   # completar con los datos de su stack de Grafana Cloud
 docker compose up --build
 ```
 
@@ -26,7 +28,13 @@ curl --location 'http://localhost:3000/scoring' \
   "MontoSolicitado": 300000,
   "PlazoMeses": 24
 }'
+# → 202 { "id": "...", "estado": "PENDIENTE" }
+
+curl http://localhost:3000/scoring/<id>
+# → 200 { "estado": "COMPLETADO", "score": ..., ... } a los pocos segundos
 ```
+
+Para mandar telemetría a Grafana Cloud: `cp .env.example .env`, completarlo y levantar con `docker compose --profile otel up --build`.
 
 ## Imágenes para ECR
 
