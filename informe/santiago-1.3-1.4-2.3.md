@@ -67,13 +67,17 @@ Esta captura muestra el target group `scoring-tg` en el momento del reemplazo: l
 
 Esta captura muestra la tarea `f0e68e1b...` detenida por el servicio, con estado `Deactivating`.
 
-[Captura: pestaña Events del servicio scoring-api con los eventos de la tabla]
+![Eventos del servicio scoring-api](capturas/1.4-eventos-ecs.png)
+
+Esta captura muestra los eventos del servicio durante la prueba: a las 21:52 ECS reemplaza una tarea "due to an unhealthy status", y a las 21:53 detiene la tarea f0e68e1b... porque el target quedó unhealthy por "Request timed out".
 
 Los errores salen de ese ciclo, y los contamos combinando k6 con las métricas del ALB en CloudWatch. De las 27 solicitudes fallidas, 15 fueron timeouts del lado de k6, que esperaron 60 segundos en la fila sin recibir respuesta. Otras 7 fueron 502 Bad Gateway, que el ALB devuelve cuando el target corta la conexión o responde de forma inválida, y eso pasa cuando ECS detiene una tarea que todavía tenía solicitudes en curso. Las 4 restantes fueron 504 Gateway Timeout, que el ALB devuelve cuando el target no contesta dentro de su propio límite de espera. En esta corrida no registramos ningún 503, y preferimos decirlo en lugar de forzar la explicación. El 503 lo devuelve el ALB cuando el target group se queda sin ningún target sano. En nuestra prueba eso no llegó a pasar, porque la tarea de reemplazo se registró como sana antes de que la original terminara de salir. Con más carga, o con varios reemplazos seguidos, el servicio puede quedarse sin targets sanos, y ahí aparecen los 503 que reporta la financiera.
 
 Para descartar otras causas miramos los recursos de la tarea en CloudWatch. La CPU pasó de menos del 3 % antes de la prueba al 100 % durante los tres minutos en que corrió, mientras que la memoria nunca superó el 9,4 %. No es un problema de memoria ni de dependencias externas, porque la aplicación no llama a ninguna base de datos ni servicio. Es un problema de CPU en el hilo principal.
 
-[Captura: Health and metrics del servicio con la CPU al 100 % y la memoria baja]
+![CPU y memoria del servicio](capturas/1.4-cpu-memoria.png)
+
+Esta captura muestra el uso de recursos del servicio durante la prueba: la CPU sube hasta el 100 % mientras la memoria no pasa del 9,38 %.
 
 En resumen, el cuello de botella es el cálculo de Monte Carlo ejecutado de forma síncrona dentro de la solicitud HTTP. Bloquea el event loop, encola las solicitudes, hace fallar el health check y desencadena los reinicios que producen los 502, los 504 y, con suficiente carga, los 503.
 
