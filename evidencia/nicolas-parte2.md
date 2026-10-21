@@ -40,6 +40,28 @@ Servicio ECS scoring-worker (2 tareas, scoring-worker:1)
 > **[Captura 2.2-d]** DynamoDB → Tables → `Scorings` → *Explore table items* con la solicitud en estado `COMPLETADO`.
 > *Demuestran los componentes de la nueva arquitectura.*
 
+## Decisiones de infraestructura
+
+| Decisión | Motivo |
+|---|---|
+| **El worker es un servicio ECS aparte, sin load balancer** | El cálculo pesado ya no corre en el proceso que atiende HTTP: aunque el worker esté al 100 % de CPU, la API y su health check siguen respondiendo. El worker no recibe tráfico, así que no necesita ALB ni health check HTTP. |
+| **Una sola imagen, dos comandos** (`node index.js` / `node worker.js`) | Un solo build y un solo push; API y worker siempre comparten la misma versión de `scoring.js` (mismo modelo). |
+| **SQS Standard entre API y worker** | Desacopla la recepción del procesamiento: los picos quedan en la cola en vez de saturar la API. Entrega *at least once*, por eso el worker es idempotente (si el item ya está `COMPLETADO`, descarta el duplicado). |
+| **Visibility timeout de 60 s** | Un cálculo tarda ~6 s en 0,25 vCPU; 60 s da margen para que otro worker no tome el mismo mensaje mientras se procesa. Si el worker muere, el mensaje reaparece al vencer ese tiempo. |
+| **DLQ con maximum receives = 3** | Un mensaje que falla 3 veces (por ejemplo, un error inesperado) pasa a `scoring-jobs-dlq` para revisarlo, en vez de reintentarse para siempre y bloquear a los workers. |
+| **El worker borra el mensaje al final** | Si la tarea se detiene a mitad del cálculo, el mensaje no se pierde: vuelve a la cola. |
+| **DynamoDB on-demand (`PAY_PER_REQUEST`)** | La carga es variable (picos en horario de atención); no hace falta estimar capacidad. Acceso por clave (`id`), que es justo el patrón de `GET /scoring/:id`. |
+| **Misma CPU y memoria que en la Parte 1 (0,25 vCPU / 512 MB)** | Para que la comparación de k6 sea en igualdad de condiciones: la mejora viene de la arquitectura, no de más recursos por tarea. |
+| **`LabRole` como task role** | Da a la API y al worker permisos sobre SQS y DynamoDB sin credenciales en el código ni en variables de entorno. |
+
+## Capacidad y escalado del worker
+
+- Un worker de 0,25 vCPU calcula **1 scoring cada ~6 s ≈ 10 por minuto**. Con 2 workers: **≈ 20 por minuto**.
+- La API ya no es el límite: solo valida, escribe en DynamoDB y encola (≈ 0,5 s por solicitud, sin bloquear el event loop).
+- Si entran más solicitudes por minuto de las que procesan los workers, **la cola crece pero no se pierde nada ni falla la API**: las solicitudes quedan `PENDIENTE` hasta que un worker las toma.
+- Escalado propuesto: **ECS Service Auto Scaling sobre `scoring-worker` con la métrica de profundidad de la cola** (`ApproximateNumberOfMessagesVisible` de SQS, o mensajes por tarea). Ejemplo: mínimo 2 tareas, máximo 10, objetivo ≈ 10 mensajes pendientes por tarea. La API escala por separado según CPU o cantidad de requests del ALB.
+- Esto permite dimensionar cada parte por su propia carga: muchas tareas chicas de API para recibir, y tantos workers como pida la cola en el horario pico.
+
 ## Solicitud procesada de punta a punta
 
 ```

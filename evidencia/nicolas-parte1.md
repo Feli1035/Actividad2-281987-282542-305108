@@ -79,6 +79,20 @@ HTTP 200 - tiempo total 6.16 s
 > **[Captura 1.1-d]** Terminal o Postman con la solicitud anterior y su respuesta.
 > *Demuestra que la aplicación responde a través del ALB.*
 
+### Decisiones de configuración
+
+| Decisión | Motivo |
+|---|---|
+| **0,25 vCPU / 512 MB, 1 tarea, sin auto scaling** | Es la configuración mínima de Fargate y representa el despliegue "tal cual" de la aplicación; sirve como línea base para medir. |
+| **Imagen `linux/amd64` y tarea X86_64** | La máquina de build es ARM (Apple Silicon); la arquitectura de la imagen debe coincidir con la de la task definition o la tarea no arranca. |
+| **Security group del ALB: puerto 80 abierto a internet** | Es el único punto de entrada público. |
+| **Security group de las tareas: puerto 3000 solo desde el SG del ALB** | Mínimo privilegio: nadie puede llamar al contenedor salteando el load balancer. |
+| **Target type `ip`** | Obligatorio con Fargate (modo de red `awsvpc`): cada tarea tiene su propia interfaz de red. |
+| **Health check en `/health`** | Endpoint liviano que no toca el cálculo; si no responde, la tarea realmente no puede atender. |
+| **`LabRole` como execution y task role** | En el Learner Lab no se pueden crear roles IAM; `LabRole` permite bajar la imagen de ECR y escribir logs. |
+| **Telemetría desactivada (`OTEL_SDK_DISABLED=true`) y sin sidecar del collector** | No se cuenta con credenciales de Grafana Cloud y la letra no pide observabilidad; las métricas se toman de CloudWatch. |
+| **Logs a CloudWatch (`awslogs`, grupo `/ecs/scoring-app`)** | Permite ver qué hace la aplicación bajo carga sin entrar al contenedor. |
+
 ## 1.2 Condiciones iniciales del despliegue
 
 ### Task definition `scoring-app:1`
