@@ -1,0 +1,113 @@
+== 21:50:43
+172.31.18.47	healthy	None
+== 21:50:49
+172.31.18.47	healthy	None
+== 21:50:55
+172.31.18.47	healthy	None
+== 21:51:01
+172.31.18.47	healthy	None
+== 21:51:07
+172.31.18.47	healthy	None
+== 21:51:13
+172.31.18.47	healthy	None
+== 21:51:19
+172.31.18.47	healthy	None
+== 21:51:25
+172.31.18.47	healthy	None
+== 21:51:31
+172.31.18.47	healthy	None
+== 21:51:37
+172.31.18.47	unhealthy	Target.Timeout
+== 21:51:43
+172.31.18.47	unhealthy	Target.Timeout
+== 21:51:49
+172.31.18.47	unhealthy	Target.Timeout
+== 21:51:55
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:01
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:07
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:13
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:19
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:25
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:31
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:37
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:43
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:48
+172.31.18.47	unhealthy	Target.Timeout
+== 21:52:54
+172.31.18.47	unhealthy	Target.Timeout
+172.31.91.9	healthy	None
+== 21:53:00
+172.31.18.47	unhealthy	Target.Timeout
+172.31.91.9	healthy	None
+== 21:53:06
+172.31.18.47	unhealthy	Target.Timeout
+172.31.91.9	healthy	None
+== 21:53:12
+172.31.18.47	unhealthy	Target.Timeout
+172.31.91.9	healthy	None
+== 21:53:18
+172.31.18.47	unhealthy	Target.Timeout
+172.31.91.9	healthy	None
+== 21:53:24
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:53:30
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:53:36
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:53:42
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:53:48
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:53:54
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:54:00
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:06
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:12
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:18
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:24
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:30
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:36
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	unhealthy	Target.Timeout
+== 21:54:42
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:54:47
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:54:53
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:54:59
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None
+== 21:55:05
+172.31.18.47	draining	Target.DeregistrationInProgress
+172.31.91.9	healthy	None

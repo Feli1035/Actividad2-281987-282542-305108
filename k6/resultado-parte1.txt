@@ -1,0 +1,675 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: k6/scoring-load.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 10 max VUs, 3m30s max duration (incl. graceful stop):
+              * default: Up to 10 looping VUs for 3m0s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (0m01.0s), 01/10 VUs, 0 complete and 0 interrupted iterations
+default   [   1% ] 01/10 VUs  0m01.0s/3m00.0s
+
+running (0m02.0s), 01/10 VUs, 0 complete and 0 interrupted iterations
+default   [   1% ] 01/10 VUs  0m02.0s/3m00.0s
+
+running (0m03.0s), 01/10 VUs, 0 complete and 0 interrupted iterations
+default   [   2% ] 01/10 VUs  0m03.0s/3m00.0s
+
+running (0m04.0s), 02/10 VUs, 0 complete and 0 interrupted iterations
+default   [   2% ] 02/10 VUs  0m04.0s/3m00.0s
+
+running (0m05.0s), 02/10 VUs, 0 complete and 0 interrupted iterations
+default   [   3% ] 02/10 VUs  0m05.0s/3m00.0s
+
+running (0m06.0s), 02/10 VUs, 0 complete and 0 interrupted iterations
+default   [   3% ] 02/10 VUs  0m06.0s/3m00.0s
+
+running (0m07.0s), 03/10 VUs, 1 complete and 0 interrupted iterations
+default   [   4% ] 03/10 VUs  0m07.0s/3m00.0s
+
+running (0m08.0s), 03/10 VUs, 1 complete and 0 interrupted iterations
+default   [   4% ] 03/10 VUs  0m08.0s/3m00.0s
+
+running (0m09.0s), 03/10 VUs, 1 complete and 0 interrupted iterations
+default   [   5% ] 03/10 VUs  0m09.0s/3m00.0s
+
+running (0m10.0s), 03/10 VUs, 1 complete and 0 interrupted iterations
+default   [   6% ] 03/10 VUs  0m10.0s/3m00.0s
+
+running (0m11.0s), 04/10 VUs, 1 complete and 0 interrupted iterations
+default   [   6% ] 04/10 VUs  0m11.0s/3m00.0s
+
+running (0m12.0s), 04/10 VUs, 1 complete and 0 interrupted iterations
+default   [   7% ] 04/10 VUs  0m12.0s/3m00.0s
+
+running (0m13.0s), 04/10 VUs, 2 complete and 0 interrupted iterations
+default   [   7% ] 04/10 VUs  0m13.0s/3m00.0s
+
+running (0m14.0s), 05/10 VUs, 2 complete and 0 interrupted iterations
+default   [   8% ] 05/10 VUs  0m14.0s/3m00.0s
+
+running (0m15.0s), 05/10 VUs, 2 complete and 0 interrupted iterations
+default   [   8% ] 05/10 VUs  0m15.0s/3m00.0s
+
+running (0m16.0s), 05/10 VUs, 2 complete and 0 interrupted iterations
+default   [   9% ] 05/10 VUs  0m16.0s/3m00.0s
+
+running (0m17.0s), 06/10 VUs, 3 complete and 0 interrupted iterations
+default   [   9% ] 06/10 VUs  0m17.0s/3m00.0s
+
+running (0m18.0s), 06/10 VUs, 3 complete and 0 interrupted iterations
+default   [  10% ] 06/10 VUs  0m18.0s/3m00.0s
+
+running (0m19.0s), 06/10 VUs, 3 complete and 0 interrupted iterations
+default   [  11% ] 06/10 VUs  0m19.0s/3m00.0s
+
+running (0m20.0s), 06/10 VUs, 3 complete and 0 interrupted iterations
+default   [  11% ] 06/10 VUs  0m20.0s/3m00.0s
+
+running (0m21.0s), 07/10 VUs, 3 complete and 0 interrupted iterations
+default   [  12% ] 07/10 VUs  0m21.0s/3m00.0s
+
+running (0m22.0s), 07/10 VUs, 4 complete and 0 interrupted iterations
+default   [  12% ] 07/10 VUs  0m22.0s/3m00.0s
+
+running (0m23.0s), 07/10 VUs, 4 complete and 0 interrupted iterations
+default   [  13% ] 07/10 VUs  0m23.0s/3m00.0s
+
+running (0m24.0s), 08/10 VUs, 4 complete and 0 interrupted iterations
+default   [  13% ] 08/10 VUs  0m24.0s/3m00.0s
+
+running (0m25.0s), 08/10 VUs, 4 complete and 0 interrupted iterations
+default   [  14% ] 08/10 VUs  0m25.0s/3m00.0s
+
+running (0m26.0s), 08/10 VUs, 4 complete and 0 interrupted iterations
+default   [  14% ] 08/10 VUs  0m26.0s/3m00.0s
+
+running (0m27.0s), 09/10 VUs, 6 complete and 0 interrupted iterations
+default   [  15% ] 09/10 VUs  0m27.0s/3m00.0s
+
+running (0m28.0s), 09/10 VUs, 6 complete and 0 interrupted iterations
+default   [  16% ] 09/10 VUs  0m28.0s/3m00.0s
+
+running (0m29.0s), 09/10 VUs, 6 complete and 0 interrupted iterations
+default   [  16% ] 09/10 VUs  0m29.0s/3m00.0s
+
+running (0m30.0s), 09/10 VUs, 6 complete and 0 interrupted iterations
+default   [  17% ] 09/10 VUs  0m30.0s/3m00.0s
+
+running (0m31.0s), 10/10 VUs, 6 complete and 0 interrupted iterations
+default   [  17% ] 10/10 VUs  0m31.0s/3m00.0s
+
+running (0m32.0s), 10/10 VUs, 7 complete and 0 interrupted iterations
+default   [  18% ] 10/10 VUs  0m32.0s/3m00.0s
+
+running (0m33.0s), 10/10 VUs, 7 complete and 0 interrupted iterations
+default   [  18% ] 10/10 VUs  0m33.0s/3m00.0s
+
+running (0m34.0s), 10/10 VUs, 7 complete and 0 interrupted iterations
+default   [  19% ] 10/10 VUs  0m34.0s/3m00.0s
+
+running (0m35.0s), 10/10 VUs, 7 complete and 0 interrupted iterations
+default   [  19% ] 10/10 VUs  0m35.0s/3m00.0s
+
+running (0m36.0s), 10/10 VUs, 7 complete and 0 interrupted iterations
+default   [  20% ] 10/10 VUs  0m36.0s/3m00.0s
+
+running (0m37.0s), 10/10 VUs, 9 complete and 0 interrupted iterations
+default   [  21% ] 10/10 VUs  0m37.0s/3m00.0s
+
+running (0m38.0s), 10/10 VUs, 9 complete and 0 interrupted iterations
+default   [  21% ] 10/10 VUs  0m38.0s/3m00.0s
+
+running (0m39.0s), 10/10 VUs, 9 complete and 0 interrupted iterations
+default   [  22% ] 10/10 VUs  0m39.0s/3m00.0s
+
+running (0m40.0s), 10/10 VUs, 9 complete and 0 interrupted iterations
+default   [  22% ] 10/10 VUs  0m40.0s/3m00.0s
+
+running (0m41.0s), 10/10 VUs, 9 complete and 0 interrupted iterations
+default   [  23% ] 10/10 VUs  0m41.0s/3m00.0s
+
+running (0m42.0s), 10/10 VUs, 10 complete and 0 interrupted iterations
+default   [  23% ] 10/10 VUs  0m42.0s/3m00.0s
+
+running (0m43.0s), 10/10 VUs, 10 complete and 0 interrupted iterations
+default   [  24% ] 10/10 VUs  0m43.0s/3m00.0s
+
+running (0m44.0s), 10/10 VUs, 10 complete and 0 interrupted iterations
+default   [  24% ] 10/10 VUs  0m44.0s/3m00.0s
+
+running (0m45.0s), 10/10 VUs, 10 complete and 0 interrupted iterations
+default   [  25% ] 10/10 VUs  0m45.0s/3m00.0s
+
+running (0m46.0s), 10/10 VUs, 10 complete and 0 interrupted iterations
+default   [  26% ] 10/10 VUs  0m46.0s/3m00.0s
+
+running (0m47.0s), 10/10 VUs, 12 complete and 0 interrupted iterations
+default   [  26% ] 10/10 VUs  0m47.0s/3m00.0s
+
+running (0m48.0s), 10/10 VUs, 12 complete and 0 interrupted iterations
+default   [  27% ] 10/10 VUs  0m48.0s/3m00.0s
+
+running (0m49.0s), 10/10 VUs, 12 complete and 0 interrupted iterations
+default   [  27% ] 10/10 VUs  0m49.0s/3m00.0s
+
+running (0m50.0s), 10/10 VUs, 12 complete and 0 interrupted iterations
+default   [  28% ] 10/10 VUs  0m50.0s/3m00.0s
+
+running (0m51.0s), 10/10 VUs, 12 complete and 0 interrupted iterations
+default   [  28% ] 10/10 VUs  0m51.0s/3m00.0s
+
+running (0m52.0s), 10/10 VUs, 13 complete and 0 interrupted iterations
+default   [  29% ] 10/10 VUs  0m52.0s/3m00.0s
+
+running (0m53.0s), 10/10 VUs, 13 complete and 0 interrupted iterations
+default   [  29% ] 10/10 VUs  0m53.0s/3m00.0s
+
+running (0m54.0s), 10/10 VUs, 13 complete and 0 interrupted iterations
+default   [  30% ] 10/10 VUs  0m54.0s/3m00.0s
+
+running (0m55.0s), 10/10 VUs, 13 complete and 0 interrupted iterations
+default   [  31% ] 10/10 VUs  0m55.0s/3m00.0s
+
+running (0m56.0s), 10/10 VUs, 13 complete and 0 interrupted iterations
+default   [  31% ] 10/10 VUs  0m56.0s/3m00.0s
+
+running (0m57.0s), 10/10 VUs, 14 complete and 0 interrupted iterations
+default   [  32% ] 10/10 VUs  0m57.0s/3m00.0s
+
+running (0m58.0s), 10/10 VUs, 14 complete and 0 interrupted iterations
+default   [  32% ] 10/10 VUs  0m58.0s/3m00.0s
+
+running (0m59.0s), 10/10 VUs, 14 complete and 0 interrupted iterations
+default   [  33% ] 10/10 VUs  0m59.0s/3m00.0s
+
+running (1m00.0s), 10/10 VUs, 14 complete and 0 interrupted iterations
+default   [  33% ] 10/10 VUs  1m00.0s/3m00.0s
+
+running (1m01.0s), 10/10 VUs, 16 complete and 0 interrupted iterations
+default   [  34% ] 10/10 VUs  1m01.0s/3m00.0s
+
+running (1m02.0s), 10/10 VUs, 16 complete and 0 interrupted iterations
+default   [  34% ] 10/10 VUs  1m02.0s/3m00.0s
+
+running (1m03.0s), 10/10 VUs, 16 complete and 0 interrupted iterations
+default   [  35% ] 10/10 VUs  1m03.0s/3m00.0s
+
+running (1m04.0s), 10/10 VUs, 16 complete and 0 interrupted iterations
+default   [  36% ] 10/10 VUs  1m04.0s/3m00.0s
+
+running (1m05.0s), 10/10 VUs, 16 complete and 0 interrupted iterations
+default   [  36% ] 10/10 VUs  1m05.0s/3m00.0s
+
+running (1m06.0s), 10/10 VUs, 17 complete and 0 interrupted iterations
+default   [  37% ] 10/10 VUs  1m06.0s/3m00.0s
+
+running (1m07.0s), 10/10 VUs, 17 complete and 0 interrupted iterations
+default   [  37% ] 10/10 VUs  1m07.0s/3m00.0s
+
+running (1m08.0s), 10/10 VUs, 17 complete and 0 interrupted iterations
+default   [  38% ] 10/10 VUs  1m08.0s/3m00.0s
+
+running (1m09.0s), 10/10 VUs, 17 complete and 0 interrupted iterations
+default   [  38% ] 10/10 VUs  1m09.0s/3m00.0s
+
+running (1m10.0s), 10/10 VUs, 17 complete and 0 interrupted iterations
+default   [  39% ] 10/10 VUs  1m10.0s/3m00.0s
+
+running (1m11.0s), 10/10 VUs, 19 complete and 0 interrupted iterations
+default   [  39% ] 10/10 VUs  1m11.0s/3m00.0s
+
+running (1m12.0s), 10/10 VUs, 19 complete and 0 interrupted iterations
+default   [  40% ] 10/10 VUs  1m12.0s/3m00.0s
+
+running (1m13.0s), 10/10 VUs, 19 complete and 0 interrupted iterations
+default   [  41% ] 10/10 VUs  1m13.0s/3m00.0s
+
+running (1m14.0s), 10/10 VUs, 19 complete and 0 interrupted iterations
+default   [  41% ] 10/10 VUs  1m14.0s/3m00.0s
+
+running (1m15.0s), 10/10 VUs, 19 complete and 0 interrupted iterations
+default   [  42% ] 10/10 VUs  1m15.0s/3m00.0s
+
+running (1m16.0s), 10/10 VUs, 20 complete and 0 interrupted iterations
+default   [  42% ] 10/10 VUs  1m16.0s/3m00.0s
+
+running (1m17.0s), 10/10 VUs, 20 complete and 0 interrupted iterations
+default   [  43% ] 10/10 VUs  1m17.0s/3m00.0s
+
+running (1m18.0s), 10/10 VUs, 20 complete and 0 interrupted iterations
+default   [  43% ] 10/10 VUs  1m18.0s/3m00.0s
+
+running (1m19.0s), 10/10 VUs, 20 complete and 0 interrupted iterations
+default   [  44% ] 10/10 VUs  1m19.0s/3m00.0s
+
+running (1m20.0s), 10/10 VUs, 20 complete and 0 interrupted iterations
+default   [  44% ] 10/10 VUs  1m20.0s/3m00.0s
+
+running (1m21.0s), 10/10 VUs, 22 complete and 0 interrupted iterations
+default   [  45% ] 10/10 VUs  1m21.0s/3m00.0s
+
+running (1m22.0s), 10/10 VUs, 22 complete and 0 interrupted iterations
+default   [  46% ] 10/10 VUs  1m22.0s/3m00.0s
+
+running (1m23.0s), 10/10 VUs, 22 complete and 0 interrupted iterations
+default   [  46% ] 10/10 VUs  1m23.0s/3m00.0s
+
+running (1m24.0s), 10/10 VUs, 22 complete and 0 interrupted iterations
+default   [  47% ] 10/10 VUs  1m24.0s/3m00.0s
+
+running (1m25.0s), 10/10 VUs, 22 complete and 0 interrupted iterations
+default   [  47% ] 10/10 VUs  1m25.0s/3m00.0s
+
+running (1m26.0s), 10/10 VUs, 23 complete and 0 interrupted iterations
+default   [  48% ] 10/10 VUs  1m26.0s/3m00.0s
+time="2026-10-20T21:52:10-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+time="2026-10-20T21:52:10-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (1m27.0s), 10/10 VUs, 23 complete and 0 interrupted iterations
+default   [  48% ] 10/10 VUs  1m27.0s/3m00.0s
+
+running (1m28.0s), 10/10 VUs, 25 complete and 0 interrupted iterations
+default   [  49% ] 10/10 VUs  1m28.0s/3m00.0s
+
+running (1m29.0s), 10/10 VUs, 25 complete and 0 interrupted iterations
+default   [  49% ] 10/10 VUs  1m29.0s/3m00.0s
+
+running (1m30.0s), 10/10 VUs, 25 complete and 0 interrupted iterations
+default   [  50% ] 10/10 VUs  1m30.0s/3m00.0s
+time="2026-10-20T21:52:13-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (1m31.0s), 10/10 VUs, 26 complete and 0 interrupted iterations
+default   [  51% ] 10/10 VUs  1m31.0s/3m00.0s
+
+running (1m32.0s), 10/10 VUs, 27 complete and 0 interrupted iterations
+default   [  51% ] 10/10 VUs  1m32.0s/3m00.0s
+
+running (1m33.0s), 10/10 VUs, 27 complete and 0 interrupted iterations
+default   [  52% ] 10/10 VUs  1m33.0s/3m00.0s
+
+running (1m34.0s), 10/10 VUs, 27 complete and 0 interrupted iterations
+default   [  52% ] 10/10 VUs  1m34.0s/3m00.0s
+
+running (1m35.0s), 10/10 VUs, 27 complete and 0 interrupted iterations
+default   [  53% ] 10/10 VUs  1m35.0s/3m00.0s
+
+running (1m36.0s), 10/10 VUs, 28 complete and 0 interrupted iterations
+default   [  53% ] 10/10 VUs  1m36.0s/3m00.0s
+time="2026-10-20T21:52:20-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (1m37.0s), 10/10 VUs, 28 complete and 0 interrupted iterations
+default   [  54% ] 10/10 VUs  1m37.0s/3m00.0s
+
+running (1m38.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  54% ] 10/10 VUs  1m38.0s/3m00.0s
+
+running (1m39.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  55% ] 10/10 VUs  1m39.0s/3m00.0s
+
+running (1m40.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  56% ] 10/10 VUs  1m40.0s/3m00.0s
+
+running (1m41.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  56% ] 10/10 VUs  1m41.0s/3m00.0s
+
+running (1m42.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  57% ] 10/10 VUs  1m42.0s/3m00.0s
+
+running (1m43.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  57% ] 10/10 VUs  1m43.0s/3m00.0s
+
+running (1m44.0s), 10/10 VUs, 29 complete and 0 interrupted iterations
+default   [  58% ] 10/10 VUs  1m44.0s/3m00.0s
+
+running (1m45.0s), 10/10 VUs, 30 complete and 0 interrupted iterations
+default   [  58% ] 10/10 VUs  1m45.0s/3m00.0s
+
+running (1m46.0s), 10/10 VUs, 30 complete and 0 interrupted iterations
+default   [  59% ] 10/10 VUs  1m46.0s/3m00.0s
+time="2026-10-20T21:52:30-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (1m47.0s), 10/10 VUs, 30 complete and 0 interrupted iterations
+default   [  59% ] 10/10 VUs  1m47.0s/3m00.0s
+
+running (1m48.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  60% ] 10/10 VUs  1m48.0s/3m00.0s
+
+running (1m49.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  61% ] 10/10 VUs  1m49.0s/3m00.0s
+
+running (1m50.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  61% ] 10/10 VUs  1m50.0s/3m00.0s
+
+running (1m51.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  62% ] 10/10 VUs  1m51.0s/3m00.0s
+
+running (1m52.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  62% ] 10/10 VUs  1m52.0s/3m00.0s
+
+running (1m53.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  63% ] 10/10 VUs  1m53.0s/3m00.0s
+
+running (1m54.0s), 10/10 VUs, 31 complete and 0 interrupted iterations
+default   [  63% ] 10/10 VUs  1m54.0s/3m00.0s
+
+running (1m55.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  64% ] 10/10 VUs  1m55.0s/3m00.0s
+
+running (1m56.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  64% ] 10/10 VUs  1m56.0s/3m00.0s
+
+running (1m57.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  65% ] 10/10 VUs  1m57.0s/3m00.0s
+
+running (1m58.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  66% ] 10/10 VUs  1m58.0s/3m00.0s
+
+running (1m59.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  66% ] 10/10 VUs  1m59.0s/3m00.0s
+
+running (2m00.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  67% ] 10/10 VUs  2m00.0s/3m00.0s
+time="2026-10-20T21:52:44-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m01.0s), 10/10 VUs, 32 complete and 0 interrupted iterations
+default   [  67% ] 10/10 VUs  2m01.0s/3m00.0s
+
+running (2m02.0s), 10/10 VUs, 33 complete and 0 interrupted iterations
+default   [  68% ] 10/10 VUs  2m02.0s/3m00.0s
+
+running (2m03.0s), 10/10 VUs, 33 complete and 0 interrupted iterations
+default   [  68% ] 10/10 VUs  2m03.0s/3m00.0s
+
+running (2m04.0s), 10/10 VUs, 33 complete and 0 interrupted iterations
+default   [  69% ] 10/10 VUs  2m04.0s/3m00.0s
+
+running (2m05.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  69% ] 10/10 VUs  2m05.0s/3m00.0s
+
+running (2m06.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  70% ] 10/10 VUs  2m06.0s/3m00.0s
+
+running (2m07.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  71% ] 10/10 VUs  2m07.0s/3m00.0s
+
+running (2m08.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  71% ] 10/10 VUs  2m08.0s/3m00.0s
+
+running (2m09.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  72% ] 10/10 VUs  2m09.0s/3m00.0s
+
+running (2m10.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  72% ] 10/10 VUs  2m10.0s/3m00.0s
+time="2026-10-20T21:52:54-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m11.0s), 10/10 VUs, 34 complete and 0 interrupted iterations
+default   [  73% ] 10/10 VUs  2m11.0s/3m00.0s
+
+running (2m12.0s), 10/10 VUs, 35 complete and 0 interrupted iterations
+default   [  73% ] 10/10 VUs  2m12.0s/3m00.0s
+
+running (2m13.0s), 10/10 VUs, 35 complete and 0 interrupted iterations
+default   [  74% ] 10/10 VUs  2m13.0s/3m00.0s
+
+running (2m14.0s), 10/10 VUs, 35 complete and 0 interrupted iterations
+default   [  74% ] 10/10 VUs  2m14.0s/3m00.0s
+
+running (2m15.0s), 10/10 VUs, 36 complete and 0 interrupted iterations
+default   [  75% ] 10/10 VUs  2m15.0s/3m00.0s
+
+running (2m16.0s), 10/10 VUs, 36 complete and 0 interrupted iterations
+default   [  76% ] 10/10 VUs  2m16.0s/3m00.0s
+
+running (2m17.0s), 10/10 VUs, 36 complete and 0 interrupted iterations
+default   [  76% ] 10/10 VUs  2m17.0s/3m00.0s
+
+running (2m18.0s), 10/10 VUs, 36 complete and 0 interrupted iterations
+default   [  77% ] 10/10 VUs  2m18.0s/3m00.0s
+
+running (2m19.0s), 10/10 VUs, 37 complete and 0 interrupted iterations
+default   [  77% ] 10/10 VUs  2m19.0s/3m00.0s
+
+running (2m20.0s), 10/10 VUs, 37 complete and 0 interrupted iterations
+default   [  78% ] 10/10 VUs  2m20.0s/3m00.0s
+time="2026-10-20T21:53:04-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m21.0s), 10/10 VUs, 37 complete and 0 interrupted iterations
+default   [  78% ] 10/10 VUs  2m21.0s/3m00.0s
+
+running (2m22.0s), 10/10 VUs, 38 complete and 0 interrupted iterations
+default   [  79% ] 10/10 VUs  2m22.0s/3m00.0s
+
+running (2m23.0s), 10/10 VUs, 38 complete and 0 interrupted iterations
+default   [  79% ] 10/10 VUs  2m23.0s/3m00.0s
+
+running (2m24.0s), 10/10 VUs, 38 complete and 0 interrupted iterations
+default   [  80% ] 10/10 VUs  2m24.0s/3m00.0s
+
+running (2m25.0s), 10/10 VUs, 40 complete and 0 interrupted iterations
+default   [  81% ] 10/10 VUs  2m25.0s/3m00.0s
+
+running (2m26.0s), 10/10 VUs, 40 complete and 0 interrupted iterations
+default   [  81% ] 10/10 VUs  2m26.0s/3m00.0s
+
+running (2m27.0s), 10/10 VUs, 40 complete and 0 interrupted iterations
+default   [  82% ] 10/10 VUs  2m27.0s/3m00.0s
+time="2026-10-20T21:53:11-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+time="2026-10-20T21:53:11-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m28.0s), 10/10 VUs, 40 complete and 0 interrupted iterations
+default   [  82% ] 10/10 VUs  2m28.0s/3m00.0s
+
+running (2m29.0s), 10/10 VUs, 42 complete and 0 interrupted iterations
+default   [  83% ] 10/10 VUs  2m29.0s/3m00.0s
+
+running (2m30.0s), 10/10 VUs, 42 complete and 0 interrupted iterations
+default   [  83% ] 10/10 VUs  2m30.0s/3m00.0s
+time="2026-10-20T21:53:14-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m31.0s), 10/10 VUs, 44 complete and 0 interrupted iterations
+default   [  84% ] 10/10 VUs  2m31.0s/3m00.0s
+time="2026-10-20T21:53:14-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m32.0s), 10/10 VUs, 45 complete and 0 interrupted iterations
+default   [  84% ] 10/10 VUs  2m32.0s/3m00.0s
+
+running (2m33.0s), 10/10 VUs, 46 complete and 0 interrupted iterations
+default   [  85% ] 10/10 VUs  2m33.0s/3m00.0s
+
+running (2m34.0s), 10/10 VUs, 46 complete and 0 interrupted iterations
+default   [  86% ] 10/10 VUs  2m34.0s/3m00.0s
+
+running (2m35.0s), 10/10 VUs, 46 complete and 0 interrupted iterations
+default   [  86% ] 10/10 VUs  2m35.0s/3m00.0s
+
+running (2m36.0s), 10/10 VUs, 46 complete and 0 interrupted iterations
+default   [  87% ] 10/10 VUs  2m36.0s/3m00.0s
+
+running (2m37.0s), 10/10 VUs, 47 complete and 0 interrupted iterations
+default   [  87% ] 10/10 VUs  2m37.0s/3m00.0s
+time="2026-10-20T21:53:21-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m38.0s), 10/10 VUs, 47 complete and 0 interrupted iterations
+default   [  88% ] 10/10 VUs  2m38.0s/3m00.0s
+
+running (2m39.0s), 10/10 VUs, 48 complete and 0 interrupted iterations
+default   [  88% ] 10/10 VUs  2m39.0s/3m00.0s
+
+running (2m40.0s), 10/10 VUs, 48 complete and 0 interrupted iterations
+default   [  89% ] 10/10 VUs  2m40.0s/3m00.0s
+
+running (2m41.0s), 10/10 VUs, 48 complete and 0 interrupted iterations
+default   [  89% ] 10/10 VUs  2m41.0s/3m00.0s
+
+running (2m42.0s), 10/10 VUs, 48 complete and 0 interrupted iterations
+default   [  90% ] 10/10 VUs  2m42.0s/3m00.0s
+
+running (2m43.0s), 09/10 VUs, 49 complete and 0 interrupted iterations
+default   [  91% ] 09/10 VUs  2m43.0s/3m00.0s
+
+running (2m44.0s), 09/10 VUs, 49 complete and 0 interrupted iterations
+default   [  91% ] 09/10 VUs  2m44.0s/3m00.0s
+
+running (2m45.0s), 09/10 VUs, 49 complete and 0 interrupted iterations
+default   [  92% ] 09/10 VUs  2m45.0s/3m00.0s
+
+running (2m46.0s), 09/10 VUs, 49 complete and 0 interrupted iterations
+default   [  92% ] 09/10 VUs  2m46.0s/3m00.0s
+
+running (2m47.0s), 09/10 VUs, 49 complete and 0 interrupted iterations
+default   [  93% ] 09/10 VUs  2m47.0s/3m00.0s
+time="2026-10-20T21:53:31-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (2m48.0s), 09/10 VUs, 49 complete and 0 interrupted iterations
+default   [  93% ] 09/10 VUs  2m48.0s/3m00.0s
+
+running (2m49.0s), 07/10 VUs, 52 complete and 0 interrupted iterations
+default   [  94% ] 07/10 VUs  2m49.0s/3m00.0s
+
+running (2m50.0s), 07/10 VUs, 52 complete and 0 interrupted iterations
+default   [  94% ] 07/10 VUs  2m50.0s/3m00.0s
+
+running (2m51.0s), 07/10 VUs, 52 complete and 0 interrupted iterations
+default   [  95% ] 07/10 VUs  2m51.0s/3m00.0s
+
+running (2m52.0s), 07/10 VUs, 52 complete and 0 interrupted iterations
+default   [  96% ] 07/10 VUs  2m52.0s/3m00.0s
+
+running (2m53.0s), 07/10 VUs, 52 complete and 0 interrupted iterations
+default   [  96% ] 07/10 VUs  2m53.0s/3m00.0s
+
+running (2m54.0s), 07/10 VUs, 53 complete and 0 interrupted iterations
+default   [  97% ] 07/10 VUs  2m54.0s/3m00.0s
+
+running (2m55.0s), 07/10 VUs, 53 complete and 0 interrupted iterations
+default   [  97% ] 07/10 VUs  2m55.0s/3m00.0s
+
+running (2m56.0s), 07/10 VUs, 53 complete and 0 interrupted iterations
+default   [  98% ] 07/10 VUs  2m56.0s/3m00.0s
+
+running (2m57.0s), 07/10 VUs, 53 complete and 0 interrupted iterations
+default   [  98% ] 07/10 VUs  2m57.0s/3m00.0s
+
+running (2m58.0s), 07/10 VUs, 53 complete and 0 interrupted iterations
+default   [  99% ] 07/10 VUs  2m58.0s/3m00.0s
+
+running (2m59.0s), 07/10 VUs, 53 complete and 0 interrupted iterations
+default   [  99% ] 07/10 VUs  2m59.0s/3m00.0s
+
+running (3m00.0s), 06/10 VUs, 55 complete and 0 interrupted iterations
+default   [ 100% ] 06/10 VUs  3m00.0s/3m00.0s
+
+running (3m01.0s), 06/10 VUs, 55 complete and 0 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+time="2026-10-20T21:53:45-03:00" level=warning msg="Request Failed" error="Post \"http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring\": request timeout"
+
+running (3m02.0s), 06/10 VUs, 55 complete and 0 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m03.0s), 06/10 VUs, 55 complete and 0 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m04.0s), 04/10 VUs, 56 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m05.0s), 04/10 VUs, 56 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m06.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m07.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m08.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m09.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m10.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m11.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m12.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m13.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m14.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m15.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m16.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m17.0s), 02/10 VUs, 58 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m18.0s), 01/10 VUs, 59 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m19.0s), 01/10 VUs, 59 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m20.0s), 01/10 VUs, 59 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+running (3m21.0s), 01/10 VUs, 59 complete and 1 interrupted iterations
+default ↓ [ 100% ] 06/10 VUs  3m0s
+
+
+  █ THRESHOLDS 
+
+    http_req_duration
+    ✗ 'p(95)<2500' p(95)=59.99s
+
+    http_req_failed
+    ✗ 'rate<0.01' rate=45.76%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 59     0.293536/s
+    checks_succeeded...: 54.23% 32 out of 59
+    checks_failed......: 45.76% 27 out of 59
+
+    ✗ respuesta exitosa (200 o 202)
+      ↳  54% — ✓ 32 / ✗ 27
+
+    HTTP
+    http_req_duration..............: avg=26.06s min=4.88s med=9.28s  max=1m0s   p(90)=59.99s p(95)=59.99s
+      { expected_response:true }...: avg=17.08s min=5.21s med=8.88s  max=55.98s p(90)=37s    p(95)=46.07s
+    http_req_failed................: 45.76% 27 out of 59
+    http_reqs......................: 59     0.293536/s
+
+    EXECUTION
+    iteration_duration.............: avg=27.12s min=5.88s med=10.29s max=1m1s   p(90)=1m1s   p(95)=1m1s  
+    iterations.....................: 59     0.293536/s
+    vus............................: 1      min=1        max=10
+    vus_max........................: 10     min=10       max=10
+
+    NETWORK
+    data_received..................: 15 kB  74 B/s
+    data_sent......................: 16 kB  79 B/s
+
+
+
+
+running (3m21.0s), 00/10 VUs, 59 complete and 2 interrupted iterations
+default ✓ [ 100% ] 00/10 VUs  3m0s
+time="2026-10-20T21:54:05-03:00" level=error msg="thresholds on metrics 'http_req_duration, http_req_failed' have been crossed"
