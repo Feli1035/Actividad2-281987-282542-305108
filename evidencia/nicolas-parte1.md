@@ -33,7 +33,9 @@ docker push <cuenta>.dkr.ecr.us-east-1.amazonaws.com/scoring-app:latest
 |---|---|---|---|
 | scoring-app | latest | `sha256:e694a614…bce3a8f8d` | 20/10/2026 21:47 |
 
-> **[Captura 1.1-a]** ECR → Repositories → `scoring-app` → imagen `latest`.
+![Captura 1.1-a](img/1.1-a-ecr-imagen.png)
+
+*Captura 1.1-a: ECR → Repositories → `scoring-app` → imagen `latest`.*
 > *Demuestra que la imagen de la aplicación está publicada en ECR.*
 
 ### Servicio en ECS
@@ -48,7 +50,9 @@ docker push <cuenta>.dkr.ecr.us-east-1.amazonaws.com/scoring-app:latest
 | Tareas deseadas / corriendo | 1 / 1 |
 | Load balancer | `scoring-alb` → target group `scoring-tg`, contenedor `api:3000` |
 
-> **[Captura 1.1-b]** ECS → Clusters → `actividad2` → Services → `scoring-api` (pestaña *Health and metrics* o *Configuration and networking*).
+![Captura 1.1-b](img/1.1-b-servicio-ecs.png)
+
+*Captura 1.1-b: ECS → Clusters → `actividad2` → Services → `scoring-api` → Configuration and networking. Servicio Fargate, estrategia REPLICA, red `awsvpc` con IP pública. (La captura se tomó después del despliegue de la Parte 2, por eso figura la revisión `scoring-app:2`; durante la Parte 1 el servicio corría `scoring-app:1`, ver 1.2-a y 1.4-b.)*
 > *Demuestra que el servicio corre sobre Fargate y está asociado al ALB.*
 
 ### Target group
@@ -57,7 +61,9 @@ docker push <cuenta>.dkr.ecr.us-east-1.amazonaws.com/scoring-app:latest
 |---|---|---|---|
 | `scoring-tg` | HTTP / 3000 | ip | **healthy** |
 
-> **[Captura 1.1-c]** EC2 → Target groups → `scoring-tg` → pestaña *Targets* con el target en `healthy`.
+![Captura 1.1-c](img/1.1-c-target-group-targets.png)
+
+*Captura 1.1-c: EC2 → Target groups → `scoring-tg` → pestaña *Targets* con el target en `healthy`.*
 > *Demuestra que el ALB enruta a la tarea y que esta pasa el health check.*
 
 ### Resultado de una solicitud
@@ -126,8 +132,12 @@ Con esta configuración, **si `/health` no responde en 5 s en dos chequeos segui
 
 Una única solicitud, sin otras en curso, tarda **6,16 s** (ver 1.1). Es decir, **incluso sin concurrencia el tiempo de respuesta ya supera el umbral de 2500 ms** que pide la prueba, porque el cálculo ocupa toda la CPU de 0,25 vCPU de la tarea.
 
-> **[Captura 1.2-a]** ECS → Task definitions → `scoring-app` → revisión 1 (CPU, memoria, plataforma, puerto).
-> **[Captura 1.2-b]** EC2 → Target groups → `scoring-tg` → pestaña *Health checks*.
+![Captura 1.2-a](img/1.2-a-task-definition-v1.png)
+
+*Captura 1.2-a: ECS → Task definitions → `scoring-app` → revisión 1 (CPU, memoria, plataforma, puerto).*
+![Captura 1.2-b](img/1.2-b-target-group-health-check.png)
+
+*Captura 1.2-b: EC2 → Target groups → `scoring-tg` → pestaña *Health checks*.*
 > *Demuestran las condiciones iniciales sobre las que se ejecuta la prueba de carga.*
 
 ## 1.4 Evidencia de infraestructura durante la prueba de carga (insumo para el diagnóstico)
@@ -147,8 +157,12 @@ Datos tomados durante la ejecución de k6 (20/10/2026, 21:50–21:54).
 
 Motivo de detención de la tarea `f0e68e1b…`: **`Task failed ELB health checks in target-group scoring-tg`** (`stopCode: ServiceSchedulerInitiated`).
 
-> **[Captura 1.4-a]** ECS → `scoring-api` → pestaña *Events* con los mensajes anteriores.
-> **[Captura 1.4-b]** ECS → `scoring-api` → *Tasks* → filtro *Stopped* → tarea `f0e68e1b…` con el *stopped reason*.
+![Captura 1.4-a](img/1.4-a-eventos-servicio.png)
+
+*Captura 1.4-a: ECS → `scoring-api` → pestaña *Events* con los mensajes anteriores.*
+![Captura 1.4-b](img/1.4-b-task-detenida.png)
+
+*Captura 1.4-b: ECS → `scoring-api` → *Tasks* → filtro *Stopped* → tarea `f0e68e1b…` con el *stopped reason*.*
 > *Demuestran que el "reinicio" es ECS reemplazando la tarea porque falló el health check del ALB.*
 
 ### Estado del target group durante la prueba
@@ -163,7 +177,9 @@ Motivo de detención de la tarea `f0e68e1b…`: **`Task failed ELB health checks
 
 Al final de la prueba el target viejo (`172.31.18.47`) quedó en `draining` (`Target.DeregistrationInProgress`) y el nuevo (`172.31.91.9`) en `healthy`.
 
-> **[Captura 1.4-c]** EC2 → Target groups → `scoring-tg` → *Targets* (un target `draining`/`unhealthy`) y pestaña *Monitoring* → *Unhealthy hosts*.
+![Captura 1.4-c](img/2.3-f-target-group-healthy.png)
+
+*Captura 1.4-c: EC2 → Target groups → `scoring-tg` → *Targets* (un target `draining`/`unhealthy`) y pestaña *Monitoring* → *Unhealthy hosts*.*
 > *Demuestra que el ALB dejó de considerar sano al único target.*
 
 ### Uso de CPU y memoria de la tarea (CloudWatch, `AWS/ECS`)
@@ -178,7 +194,9 @@ Al final de la prueba el target viejo (`172.31.18.47`) quedó en `draining` (`Ta
 
 La **CPU se satura al 100 %** apenas empieza la carga, mientras la **memoria no supera el 10 %**: el cuello de botella es CPU, no memoria. (El promedio de 21:52 baja porque en ese minuto se está reemplazando la tarea.)
 
-> **[Captura 1.4-d]** ECS → `scoring-api` → *Health and metrics* (gráficas de CPU y memoria).
+![Captura 1.4-d](img/1.4-d-metricas-servicio.png)
+
+*Captura 1.4-d: ECS → `scoring-api` → *Health and metrics* (gráficas de CPU y memoria).*
 
 ### Códigos HTTP devueltos por el ALB (CloudWatch, `AWS/ApplicationELB`)
 
@@ -191,7 +209,9 @@ La **CPU se satura al 100 %** apenas empieza la carga, mientras la **memoria no 
 
 Mientras tanto, la aplicación solo completa **entre 7 y 12 solicitudes por minuto** (≈ 0,1–0,2 solicitudes/s): cada cálculo de scoring tarda varios segundos y se procesan de a uno.
 
-> **[Captura 1.4-e]** EC2 → Load balancers → `scoring-alb` → *Monitoring* (ELB 5XX, Target response time, Requests).
+![Captura 1.4-e](img/2.3-c-alb-monitoring.png)
+
+*Captura 1.4-e: EC2 → Load balancers → `scoring-alb` → *Monitoring* (ELB 5XX, Target response time, Requests).*
 > *Demuestra los errores 502/504 generados por el ALB bajo carga.*
 
 ### Logs de la aplicación (CloudWatch Logs `/ecs/scoring-app`)
@@ -205,7 +225,9 @@ Mientras tanto, la aplicación solo completa **entre 7 y 12 solicitudes por minu
 
 Los cálculos se completan **de a uno, cada 3–5 segundos**, aunque k6 envía solicitudes de 10 usuarios concurrentes.
 
-> **[Captura 1.4-f]** CloudWatch → Log groups → `/ecs/scoring-app` (opcional).
+![Captura 1.4-f](img/2.2-f-logs-api-worker.png)
+
+*Captura 1.4-f: CloudWatch → Log groups → `/ecs/scoring-app` (opcional).*
 
 ### Lectura de la evidencia (para la 1.4)
 

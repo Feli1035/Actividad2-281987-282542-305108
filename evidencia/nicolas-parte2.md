@@ -34,10 +34,20 @@ Servicio ECS scoring-worker (2 tareas, scoring-worker:1)
 | Recursos por tarea | API y worker | 0,25 vCPU / 512 MB, **igual que en la Parte 1** para comparar en las mismas condiciones |
 | Roles | API y worker | `LabRole` (execution y task role: permisos para SQS y DynamoDB) |
 
-> **[Captura 2.2-a]** ECS → Clusters → `actividad2` → *Services*: `scoring-api` y `scoring-worker` en estado Active con sus tareas corriendo.
-> **[Captura 2.2-b]** ECS → Task definitions → `scoring-worker` → revisión 1 (comando `node worker.js`, variables de entorno).
-> **[Captura 2.2-c]** SQS → Queues: `scoring-jobs` y `scoring-jobs-dlq`; y `scoring-jobs` → pestaña *Dead-letter queue* (DLQ asociada, maximum receives 3).
-> **[Captura 2.2-d]** DynamoDB → Tables → `Scorings` → *Explore table items* con la solicitud en estado `COMPLETADO`.
+![Captura 2.2-a](img/2.2-a-servicios-cluster.png)
+
+*Captura 2.2-a: ECS → Clusters → `actividad2` → *Services*: `scoring-api` y `scoring-worker` en estado Active con sus tareas corriendo.*
+![Captura 2.2-b](img/2.2-b-task-definition-worker.png)
+
+*Captura 2.2-b: ECS → Task definitions → `scoring-worker` → revisión 1 (comando `node worker.js`, variables de entorno).*
+![Captura 2.2-c](img/2.2-c-colas-sqs.png)
+
+![Captura 2.2-c](img/2.2-c2-dlq-scoring-jobs.png)
+
+*Captura 2.2-c: SQS → Queues: `scoring-jobs` y `scoring-jobs-dlq`; y `scoring-jobs` → pestaña *Dead-letter queue* (DLQ asociada, maximum receives 3).*
+![Captura 2.2-d](img/2.2-d-item-dynamodb-completado.png)
+
+*Captura 2.2-d: DynamoDB → Tables → `Scorings` → *Explore table items* con la solicitud en estado `COMPLETADO`.*
 > *Demuestran los componentes de la nueva arquitectura.*
 
 ## Decisiones de infraestructura
@@ -94,17 +104,61 @@ Observaciones:
 - Validaciones en el borde: datos inválidos → `400 {"error":"Datos de solicitud inválidos"}` sin encolar; id inexistente → `404 {"error":"Solicitud no encontrada"}`.
 
 > **[Captura 2.2-e]** Terminal con el POST (202) y los dos GET (PENDIENTE → COMPLETADO).
-> **[Captura 2.2-f]** CloudWatch → Log groups → `/ecs/scoring-app`: líneas "Scoring encolado" (stream `api/…`) y "Scoring calculado" (stream `worker/…`).
+![Captura 2.2-f](img/2.2-f-logs-api-worker.png)
+
+*Captura 2.2-f: CloudWatch → Log groups → `/ecs/scoring-app`: líneas "Scoring encolado" (stream `api/…`) y "Scoring calculado" (stream `worker/…`).*
 > *Demuestran una solicitud procesada de punta a punta por la nueva arquitectura.*
 
 ## Durante la prueba k6 de la Parte 2 (evidencia de que no hay reinicios)
 
-A completar con la corrida de k6 de la Parte 2:
+Corrida de k6 de la Parte 2: **20/10/2026, 22:07–22:10**, mismo script y misma carga que en la Parte 1, contra `POST /scoring`. Datos de CloudWatch (archivos `2.3-*.txt`).
 
-> **[Captura 2.2-g]** ECS → `scoring-api` → *Events*: sin mensajes de "unhealthy" ni "replaced tasks".
-> **[Captura 2.2-h]** EC2 → Target groups → `scoring-tg` → *Targets*: target `healthy` durante toda la prueba.
-> **[Captura 2.2-i]** ECS → `scoring-api` → *Health and metrics*: CPU de la API baja (ya no calcula).
-> **[Captura 2.2-j]** SQS → `scoring-jobs` → *Monitoring*: mensajes encolados y consumidos por los workers.
+### Lo que vio el ALB
+
+| Minuto | Requests | 2XX de la app | 5XX del ALB (502/503/504) | Tiempo de respuesta del target, p95 |
+|---|---|---|---|---|
+| 22:07 | 246 | 246 | 0 | 0,024 s |
+| 22:08 | 517 | 517 | 0 | 0,016 s |
+| 22:09 | 501 | 501 | 0 | 0,022 s |
+| 22:10 | 47 | 47 | 0 | 0,019 s |
+| **Total** | **1311** | **1311 (100 %)** | **0** | **≈ 0,02 s** |
+
+En la Parte 1, con la misma carga, el ALB registró 7–25 requests por minuto, 502 y 504, y un tiempo de respuesta p95 del target de **31–37 s**.
+
+### Estado de los servicios
+
+- **Eventos de `scoring-api`**: el último evento es el despliegue de la v2 (22:02, *steady state*). **No hay ningún "unhealthy", "failed ELB health checks" ni "replaced tasks" durante ni después de la prueba.**
+- **Target group**: *Unhealthy hosts* = 0 en toda la ventana de la Parte 2 (el único pico de la gráfica es el de la Parte 1, 21:52).
+
+| Minuto | CPU API (máx.) | CPU worker (máx.) |
+|---|---|---|
+| 22:07 | 15,2 % | 100 % |
+| 22:08 | 14,1 % | 100 % |
+| 22:09 | 15,5 % | 100 % |
+| 22:10 | 8,1 % | 100 % |
+
+**La CPU de la API no supera el 16 %** porque ya no calcula: solo valida, escribe en DynamoDB y encola. El trabajo pesado está aislado en los workers, que trabajan al 100 % sin afectar a la API ni a su health check.
+
+### Cola y procesamiento
+
+- Al terminar la prueba: **1314 solicitudes registradas** en `Scorings`, **269 `COMPLETADO`**, **1046 `PENDIENTE`** (en cola), **0 `ERROR`**, **0 mensajes en la DLQ**.
+- La API aceptó las 1311 solicitudes en ~3,5 minutos; los 2 workers procesan ~20 por minuto. Ninguna solicitud se perdió ni falló: las pendientes quedan en la cola y se completan a medida que los workers las toman.
+- Esto confirma el punto de "Capacidad y escalado del worker": para que el tiempo hasta tener el resultado también sea corto en el pico, hay que escalar la cantidad de workers según la profundidad de la cola.
+
+![Captura 2.2-g](img/2.3-e-eventos-api-sin-reinicios.png)
+
+*Captura 2.2-g: ECS → `scoring-api` → *Events*: sin mensajes de "unhealthy" ni "replaced tasks".*
+![Captura 2.2-h](img/2.3-f-target-group-healthy.png)
+
+*Captura 2.2-h: EC2 → Target groups → `scoring-tg` → *Targets*: target `healthy` durante toda la prueba.*
+![Captura 2.2-i](img/2.3-a-api-metricas.png)
+
+![Captura 2.2-i](img/2.3-b-worker-metricas.png)
+
+*Captura 2.2-i: ECS → `scoring-api` → *Health and metrics*: CPU de la API baja (ya no calcula).*
+![Captura 2.2-j](img/2.3-d-sqs-monitoring.png)
+
+*Captura 2.2-j: SQS → `scoring-jobs` → *Monitoring*: mensajes encolados y consumidos por los workers.*
 
 ## Archivos de evidencia en texto
 
@@ -119,3 +173,8 @@ Carpeta `evidencia/parte2/`:
 | `2.2-punta-a-punta.txt` | POST 202 → GET PENDIENTE → GET COMPLETADO, 400 y 404 |
 | `2.2-logs-api-worker.txt` | Logs de la API encolando y del worker calculando |
 | `2.2-eventos-servicios.txt` | Eventos de ambos servicios tras el despliegue |
+| `2.3-alb-durante-k6.txt` | Requests, códigos HTTP, tiempo de respuesta y hosts unhealthy durante k6 de la Parte 2 |
+| `2.3-cpu-memoria-durante-k6.txt` | CPU y memoria de API y worker durante la prueba |
+| `2.3-sqs-durante-k6.txt` | Mensajes enviados, borrados y visibles en la cola y la DLQ |
+| `2.3-eventos-sin-reinicios.txt` | Eventos de ambos servicios después de la prueba |
+| `2.3-estados-dynamodb.txt` | Cantidad de solicitudes por estado al terminar la prueba |
