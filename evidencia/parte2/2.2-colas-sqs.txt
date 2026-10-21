@@ -1,0 +1,17 @@
+== scoring-jobs
+{
+    "Attributes": {
+        "QueueArn": "arn:aws:sqs:us-east-1:238324594830:scoring-jobs",
+        "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:238324594830:scoring-jobs-dlq\",\"maxReceiveCount\":3}",
+        "VisibilityTimeout": "60",
+        "ApproximateNumberOfMessages": "0",
+        "ApproximateNumberOfMessagesNotVisible": "1"
+    }
+}
+== scoring-jobs-dlq
+{
+    "Attributes": {
+        "QueueArn": "arn:aws:sqs:us-east-1:238324594830:scoring-jobs-dlq",
+        "ApproximateNumberOfMessages": "0"
+    }
+}

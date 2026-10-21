@@ -1,0 +1,14 @@
+--------------------------------------
+|        DescribeTargetGroups        |
++---------------------+--------------+
+|  hcIntervalo        |  30          |
+|  hcPath             |  /health     |
+|  hcTimeout          |  5           |
+|  healthyThreshold   |  5           |
+|  matcher            |  200         |
+|  nombre             |  scoring-tg  |
+|  protocolo          |  HTTP        |
+|  puerto             |  3000        |
+|  tipoTarget         |  ip          |
+|  unhealthyThreshold |  2           |
++---------------------+--------------+

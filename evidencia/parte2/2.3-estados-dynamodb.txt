@@ -1,0 +1,8 @@
+Total items:
+1314
+PENDIENTE:
+1046
+COMPLETADO:
+269
+ERROR:
+0

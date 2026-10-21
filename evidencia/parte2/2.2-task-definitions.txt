@@ -1,0 +1,22 @@
+-----------------------------------------------------------------------------
+|                          DescribeTaskDefinition                           |
++----------+----------------------------------------------------------------+
+|  comando |  CMD del Dockerfile (node index.js)                            |
+|  cpu     |  256                                                           |
+|  env     |  AWS_REGION, TABLE_NAME, PORT, QUEUE_URL, OTEL_SDK_DISABLED    |
+|  familia |  scoring-app                                                   |
+|  imagen  |  238324594830.dkr.ecr.us-east-1.amazonaws.com/scoring-app:v2   |
+|  memoria |  512                                                           |
+|  revision|  2                                                             |
++----------+----------------------------------------------------------------+
+-----------------------------------------------------------------------------
+|                          DescribeTaskDefinition                           |
++----------+----------------------------------------------------------------+
+|  comando |  nodeworker.js                                                 |
+|  cpu     |  256                                                           |
+|  env     |  AWS_REGION, TABLE_NAME, QUEUE_URL, OTEL_SDK_DISABLED          |
+|  familia |  scoring-worker                                                |
+|  imagen  |  238324594830.dkr.ecr.us-east-1.amazonaws.com/scoring-app:v2   |
+|  memoria |  512                                                           |
+|  revision|  1                                                             |
++----------+----------------------------------------------------------------+

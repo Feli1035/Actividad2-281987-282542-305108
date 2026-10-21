@@ -1,0 +1,7 @@
+$ curl -s http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/health
+{"status":"ok"}
+
+$ curl -X POST http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring -H "Content-Type: application/json" -d '{"CI":12345,"Nombre":"pepe","IngresoMensual":60000,"MontoSolicitado":300000,"PlazoMeses":24}'
+{"id":"78c03485-fa45-4337-9982-7ab9b605270b","CI":12345,"Nombre":"pepe","score":958,"cuota":18682,"probabilidadImpago":0.0424,"aprobado":true}
+
+HTTP 200 - tiempo total 6.160318s
