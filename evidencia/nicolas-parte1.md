@@ -82,7 +82,9 @@ $ curl -X POST http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring
 HTTP 200 - tiempo total 6.16 s
 ```
 
-> **[Captura 1.1-d]** Terminal o Postman con la solicitud anterior y su respuesta.
+![Captura 1.1-d](img/1.1-d-solicitud-sincrona.png)
+
+*Captura 1.1-d: `/health` y `POST /scoring` contra el ALB con la versión original: **HTTP 200 en 5,58 s**, con el resultado del scoring en la misma respuesta.*
 > *Demuestra que la aplicación responde a través del ALB.*
 
 ### Decisiones de configuración

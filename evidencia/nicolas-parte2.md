@@ -103,7 +103,11 @@ Observaciones:
 - El resultado es **idéntico al de la Parte 1** (score 958, cuota 18682, probabilidad de impago 0,0424): el modelo y la cantidad de simulaciones no cambiaron, solo dónde se ejecuta el cálculo.
 - Validaciones en el borde: datos inválidos → `400 {"error":"Datos de solicitud inválidos"}` sin encolar; id inexistente → `404 {"error":"Solicitud no encontrada"}`.
 
-> **[Captura 2.2-e]** Terminal con el POST (202) y los dos GET (PENDIENTE → COMPLETADO).
+![Captura 2.2-e (POST)](img/2.2-e-post-202.png)
+
+![Captura 2.2-e (GET)](img/2.2-e-get-completado.png)
+
+*Captura 2.2-e: el `POST /scoring` responde **202 en 0,29 s** con el `id` y estado `PENDIENTE`; el `GET /scoring/:id` de una solicitud ya procesada devuelve `COMPLETADO` con el mismo resultado que la versión original (score 958, cuota 18682, aprobado).*
 ![Captura 2.2-f](img/2.2-f-logs-api-worker.png)
 
 *Captura 2.2-f: CloudWatch → Log groups → `/ecs/scoring-app`: líneas "Scoring encolado" (stream `api/…`) y "Scoring calculado" (stream `worker/…`).*
