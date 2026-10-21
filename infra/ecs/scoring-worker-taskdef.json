@@ -1,0 +1,35 @@
+{
+  "family": "scoring-worker",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/LabRole",
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/LabRole",
+  "containerDefinitions": [
+    {
+      "name": "worker",
+      "image": "ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/scoring-app:v2",
+      "essential": true,
+      "command": ["node", "worker.js"],
+      "environment": [
+        { "name": "AWS_REGION", "value": "us-east-1" },
+        { "name": "QUEUE_URL", "value": "https://sqs.us-east-1.amazonaws.com/ACCOUNT_ID/scoring-jobs" },
+        { "name": "TABLE_NAME", "value": "Scorings" },
+        { "name": "OTEL_SDK_DISABLED", "value": "true" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/scoring-app",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "worker"
+        }
+      }
+    }
+  ]
+}

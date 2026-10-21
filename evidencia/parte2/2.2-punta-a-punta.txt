@@ -1,0 +1,19 @@
+$ curl -X POST http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring -H 'Content-Type: application/json' -d '{"CI":12345,"Nombre":"pepe","IngresoMensual":60000,"MontoSolicitado":300000,"PlazoMeses":24}'
+{"id":"6cef24a6-a579-4e42-bec3-9c62268ce8bb","estado":"PENDIENTE"}
+HTTP 202 - tiempo total 0.578042s
+
+$ curl http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring/6cef24a6-a579-4e42-bec3-9c62268ce8bb   # inmediatamente
+{"id":"6cef24a6-a579-4e42-bec3-9c62268ce8bb","estado":"PENDIENTE","CI":12345,"Nombre":"pepe"}
+HTTP 200
+
+$ curl http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring/6cef24a6-a579-4e42-bec3-9c62268ce8bb   # unos segundos después
+{"id":"6cef24a6-a579-4e42-bec3-9c62268ce8bb","estado":"COMPLETADO","CI":12345,"Nombre":"pepe","score":958,"cuota":18682,"probabilidadImpago":0.0424,"aprobado":true}
+HTTP 200
+
+$ curl -X POST http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring ... '{"IngresoMensual":0, ...}'   # datos inválidos
+{"error":"Datos de solicitud inválidos"}
+HTTP 400
+
+$ curl http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/scoring/no-existe
+{"error":"Solicitud no encontrada"}
+HTTP 404

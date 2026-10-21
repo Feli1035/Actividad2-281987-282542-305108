@@ -202,14 +202,9 @@ Los cálculos se completan **de a uno, cada 3–5 segundos**, aunque k6 envía s
 5. **503 Service Unavailable**: aparece cuando no hay ningún target sano registrado (en esta corrida el reemplazo se registró antes de que se vaciara el target group, por eso no se observaron 503).
 6. La memoria no supera el 10 %: **el recurso que se agota es la CPU**.
 
-## Nota para el grupo: DNS
+## Nota para el grupo: DNS del ALB
 
-El DNS del proveedor de internet (Antel, `200.40.30.245`) resolvió el nombre del ALB a una IP que no es de AWS (`184.197.59.210`), lo que provoca timeouts desde algunas redes. Si `curl` o k6 no responden, usar un DNS público (8.8.8.8) o forzar la IP:
-
-```bash
-IP=$(dig +short scoring-alb-2118578080.us-east-1.elb.amazonaws.com @8.8.8.8 | head -1)
-curl --resolve scoring-alb-2118578080.us-east-1.elb.amazonaws.com:80:$IP http://scoring-alb-2118578080.us-east-1.elb.amazonaws.com/health
-```
+Un ALB recién creado tarda unos minutos en propagar su nombre DNS. Si se consulta antes, el sistema operativo puede cachear la respuesta negativa y `curl` falla con *"Could not resolve host"* aunque el ALB ya esté activo. Se resuelve esperando o limpiando la caché: `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`.
 
 ## Archivos de evidencia en texto (salidas de AWS CLI)
 

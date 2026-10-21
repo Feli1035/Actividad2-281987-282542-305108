@@ -1,0 +1,6 @@
+2026-10-21T01:00:41 {"level":"info","message":"Worker escuchando","queue":"https://sqs.us-east-1.amazonaws.com/238324594830/scoring-jobs"}
+2026-10-21T01:01:07 {"level":"info","message":"Worker escuchando","queue":"https://sqs.us-east-1.amazonaws.com/238324594830/scoring-jobs"}
+2026-10-21T01:01:52 {"CI":1,"Nombre":"watch","id":"496a7e35-a28c-4938-aed4-272d0faf4f4b","level":"info","message":"Scoring encolado"}
+2026-10-21T01:02:01 {"CI":12345,"Nombre":"pepe","id":"68ce30ca-6a7c-4408-9573-419b34b91c61","level":"info","message":"Scoring encolado"}
+2026-10-21T01:03:54 {"CI":12345,"Nombre":"pepe","id":"6cef24a6-a579-4e42-bec3-9c62268ce8bb","level":"info","message":"Scoring encolado"}
+2026-10-21T01:04:00 {"CI":12345,"Nombre":"pepe","id":"6cef24a6-a579-4e42-bec3-9c62268ce8bb","level":"info","message":"Scoring calculado","score":958}

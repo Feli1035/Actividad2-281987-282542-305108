@@ -85,3 +85,70 @@ aws ecs describe-services --cluster actividad2 --services scoring-api --query 's
 aws ecs list-tasks --cluster actividad2 --desired-status STOPPED --query taskArns
 aws elbv2 describe-target-health --target-group-arn $TG_ARN --query 'TargetHealthDescriptions[].[Target.Id,TargetHealth.State,TargetHealth.Reason]' --output table
 ```
+
+## Parte 2: API asíncrona + cola SQS + worker
+
+### 1. Cola con DLQ y tabla
+
+```bash
+DLQ_URL=$(aws sqs create-queue --queue-name scoring-jobs-dlq --query QueueUrl --output text)
+DLQ_ARN=$(aws sqs get-queue-attributes --queue-url $DLQ_URL --attribute-names QueueArn --query Attributes.QueueArn --output text)
+cat > /tmp/queue-attrs.json <<JSON
+{"RedrivePolicy": "{\"deadLetterTargetArn\":\"$DLQ_ARN\",\"maxReceiveCount\":\"3\"}", "VisibilityTimeout": "60"}
+JSON
+QUEUE_URL=$(aws sqs create-queue --queue-name scoring-jobs --attributes file:///tmp/queue-attrs.json --query QueueUrl --output text)
+
+aws dynamodb create-table --table-name Scorings \
+  --attribute-definitions AttributeName=id,AttributeType=S \
+  --key-schema AttributeName=id,KeyType=HASH --billing-mode PAY_PER_REQUEST
+```
+
+- `maxReceiveCount = 3`: un mensaje que falla 3 veces pasa a `scoring-jobs-dlq`.
+- `VisibilityTimeout = 60 s`: margen amplio sobre los ~6 s que tarda un cálculo en 0,25 vCPU, para que otro worker no tome el mismo mensaje mientras se procesa.
+
+### 2. Imagen v2 (rama `feature/async-scoring`)
+
+```bash
+IMAGE2=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/scoring-app:v2
+docker build --platform linux/amd64 -t "${IMAGE2}" ./scoring-app
+docker push "${IMAGE2}"
+```
+
+Una sola imagen para los dos procesos: la API arranca con `node index.js` (CMD del Dockerfile) y el worker con `node worker.js` (override de `command` en su task definition).
+
+### 3. Task definitions
+
+- API: [`ecs/scoring-api-taskdef-v2.json`](ecs/scoring-api-taskdef-v2.json) → `scoring-app:2`.
+- Worker: [`ecs/scoring-worker-taskdef.json`](ecs/scoring-worker-taskdef.json) → `scoring-worker:1`, sin puertos.
+- Misma CPU y memoria que la Parte 1 (0,25 vCPU / 512 MB) para comparar en igualdad de condiciones.
+
+```bash
+for f in scoring-api-taskdef-v2 scoring-worker-taskdef; do
+  sed "s/ACCOUNT_ID/$ACCOUNT_ID/g" infra/ecs/$f.json > /tmp/$f.json
+  aws ecs register-task-definition --cli-input-json file:///tmp/$f.json
+done
+```
+
+### 4. Servicios
+
+```bash
+# La API pasa a la revisión 2 (mantiene el ALB y el target group).
+aws ecs update-service --cluster actividad2 --service scoring-api --task-definition scoring-app:2
+
+# Worker: servicio aparte, sin load balancer.
+aws ecs create-service --cluster actividad2 --service-name scoring-worker --task-definition scoring-worker:1 \
+  --desired-count 2 --launch-type FARGATE \
+  --network-configuration "awsvpcConfiguration={subnets=[$SUBNETS_CSV],securityGroups=[$TASK_SG],assignPublicIp=ENABLED}"
+
+aws ecs wait services-stable --cluster actividad2 --services scoring-api scoring-worker
+```
+
+### 5. Prueba de punta a punta
+
+```bash
+ID=$(curl -s -X POST $ALB/scoring -H 'Content-Type: application/json' \
+  -d '{"CI":12345,"Nombre":"pepe","IngresoMensual":60000,"MontoSolicitado":300000,"PlazoMeses":24}' | jq -r .id)
+curl -s $ALB/scoring/$ID   # PENDIENTE
+sleep 10
+curl -s $ALB/scoring/$ID   # COMPLETADO con score, cuota y aprobado
+```
